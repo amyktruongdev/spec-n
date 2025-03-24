@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
-st.set_page_config(page_title="Excel to CSV Converter", layout="centered")
+st.set_page_config(page_title="Spec Negotiation", layout="centered")
 
-st.title("📊 Excel to CSV Converter")
+st.title("📊 Upload Spec Negotiation File")
 
 uploaded_file = st.file_uploader("Upload your Excel (.xlsx) file", type=["xlsx"])
 
