@@ -15,12 +15,14 @@ if uploaded_file:
     result_df = pd.DataFrame()
 
     for sheet_name, df in all_sheets.items():
-        if sheet_name.lower() == "summary":  #Skip sheet named "Summary" (case-insensitive)
+        if sheet_name.strip().lower() == "summary":  # Skip "Summary" sheet, safely
             continue
 
-        #Filtered columns
-        required_cols = ['Spec Number', 'Min', 'Avg', 'Max', 'Result']
-        df.columns = df.columns.str.strip()  # Clean column names
+        # Clean column names
+        df.columns = df.columns.str.strip()
+
+        # Filter desired columns
+        required_cols = ['Spec Number', 'Description', 'Min', 'Avg', 'Max', 'Result']
         available_cols = [col for col in required_cols if col in df.columns]
 
         if len(available_cols) < len(required_cols):
@@ -29,6 +31,7 @@ if uploaded_file:
 
         filtered = df[available_cols]
         result_df = pd.concat([result_df, filtered], ignore_index=True)
+
 
     if not result_df.empty:
         st.write("✅ Preview of Extracted Data:")
