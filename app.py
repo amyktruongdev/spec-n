@@ -1,4 +1,4 @@
-# Save this as app.py
+#Select app.py to deploy to streamlit
 import streamlit as st
 import pandas as pd
 from io import StringIO
@@ -10,12 +10,12 @@ st.title("📊 Upload Spec Negotiation File")
 uploaded_file = st.file_uploader("Upload your Excel (.xlsx) file", type=["xlsx"])
 
 if uploaded_file:
-    all_sheets = pd.read_excel(uploaded_file, sheet_name=None, header=1)  # Use row 2 as header
+    all_sheets = pd.read_excel(uploaded_file, sheet_name=None, header=1)  #Use row 2 as header
 
     result_df = pd.DataFrame()
 
     for sheet_name, df in all_sheets.items():
-        # Check if required columns are present
+        #Check if required columns are present
         required_cols = ['Spec Number', 'Min', 'Avg', 'Max', 'Result']
         available_cols = [col for col in required_cols if col in df.columns]
 
