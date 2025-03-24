@@ -10,17 +10,21 @@ st.title("📊 Upload Spec Negotiation File")
 uploaded_file = st.file_uploader("Upload your Excel (.xlsx) file", type=["xlsx"])
 
 if uploaded_file:
-    all_sheets = pd.read_excel(uploaded_file, sheet_name=None, header=1)  #Use row 2 as header
+    all_sheets = pd.read_excel(uploaded_file, sheet_name=None, header=1)  #Read all sheets using row 2 as header
 
     result_df = pd.DataFrame()
 
     for sheet_name, df in all_sheets.items():
-        #Check if required columns are present
+        if sheet_name.lower() == "summary":  #Skip sheet named "Summary" (case-insensitive)
+            continue
+
+        #Filtered columns
         required_cols = ['Spec Number', 'Min', 'Avg', 'Max', 'Result']
+        df.columns = df.columns.str.strip()  # Clean column names
         available_cols = [col for col in required_cols if col in df.columns]
 
         if len(available_cols) < len(required_cols):
-            st.warning(f"Sheet '{sheet_name}' is missing some of the required columns.")
+            st.warning(f"Sheet '{sheet_name}' is missing some required columns.")
             continue
 
         filtered = df[available_cols]
@@ -33,6 +37,6 @@ if uploaded_file:
         from io import StringIO
         csv_buffer = StringIO()
         result_df.to_csv(csv_buffer, index=False)
-        st.download_button("📥 Download CSV", csv_buffer.getvalue(), file_name="combinedspecs.csv", mime="text/csv")
+        st.download_button("📥 Download CSV", csv_buffer.getvalue(), file_name="combinedspec.csv", mime="text/csv")
     else:
         st.warning("No matching data found across sheets.")
