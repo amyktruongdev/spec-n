@@ -22,7 +22,7 @@ if uploaded_file:
         df.columns = df.columns.str.strip()
 
         # Filter desired columns
-        required_cols = ['Spec Number', 'Description', 'Min', 'Avg', 'Max', 'Result']
+        required_cols = ['Spec Number', 'Min', 'Avg', 'Max', 'Result']
 
         for sheet_name, df in all_sheets.items():
             if sheet_name.strip().lower() == "summary":
