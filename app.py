@@ -33,6 +33,6 @@ if uploaded_file:
         from io import StringIO
         csv_buffer = StringIO()
         result_df.to_csv(csv_buffer, index=False)
-        st.download_button("📥 Download CSV", csv_buffer.getvalue(), file_name="filtered_output.csv", mime="text/csv")
+        st.download_button("📥 Download CSV", csv_buffer.getvalue(), file_name="combinedspecs.csv", mime="text/csv")
     else:
         st.warning("No matching data found across sheets.")
