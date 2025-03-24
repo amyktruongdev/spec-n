@@ -23,15 +23,23 @@ if uploaded_file:
 
         # Filter desired columns
         required_cols = ['Spec Number', 'Description', 'Min', 'Avg', 'Max', 'Result']
-        available_cols = [col for col in required_cols if col in df.columns]
 
-        if len(available_cols) < len(required_cols):
-            st.warning(f"Sheet '{sheet_name}' is missing some required columns.")
-            continue
+        for sheet_name, df in all_sheets.items():
+            if sheet_name.strip().lower() == "summary":
+                continue
 
-        filtered = df[available_cols]
-        result_df = pd.concat([result_df, filtered], ignore_index=True)
+            df.columns = df.columns.astype(str).str.strip().str.replace('\n', ' ')
 
+            # Build a new DataFrame with guaranteed columns
+            cleaned_df = pd.DataFrame()
+
+            for col in required_cols:
+                if col in df.columns:
+                    cleaned_df[col] = df[col]
+                else:
+                    cleaned_df[col] = ""  # Fill missing columns with empty strings
+
+            result_df = pd.concat([result_df, cleaned_df], ignore_index=True)
 
     if not result_df.empty:
         st.write("✅ Preview of Extracted Data:")
